@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var prompt = require('prompt');
 var Table = require('cli-table');
+var inquirer = require('inquirer');
 
 var connection = mysql.createConnection({
 	host: 'localhost',
@@ -50,6 +51,20 @@ var purchase = function(){
 
 	prompt.start();
 
+/*inquirer.prompt([
+    Pass your questions in here 
+    {
+        type: 'input',
+        name: 'username',
+        message: 'What is your name?'
+    }
+
+]).then(function(answer) {
+    //console.log(answer);
+    console.log(answer.username);
+    // Use the answers  for... whatever here!! 
+});*/
+
 	//get responses from prompt 
 	prompt.get(productInfo, function(err, res){
 
@@ -58,7 +73,7 @@ var purchase = function(){
 			item_id: res.item_id,
 			quantity: res.quantity
 		};
-		
+	
 		//push to productPurchased
 		productPurchased.push(geekPurchase);
 
