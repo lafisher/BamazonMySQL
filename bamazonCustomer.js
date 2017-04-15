@@ -53,7 +53,7 @@ var purchase = function(){
 	//get responses from prompt 
 	prompt.get(productInfo, function(err, res){
 
-		//push responses to geekPurchase
+		//create geekPurcahse var
 		var geekPurchase = {
 			item_id: res.item_id,
 			quantity: res.quantity
@@ -64,15 +64,15 @@ var purchase = function(){
 
 		//connect to database 
 		connection.query('SELECT * FROM Products WHERE item_id=?', productPurchased[0].item_id, function(err, res){
-				if(err) console.log(err, "dang, i could have sworn you got game. that item doesn't exist.");
+				if(err) console.log(err, "dang, i could have sworn you got game.");
 				
 				//if purchase order is greater than stock 
-				if(res[0].StockQuantity < productPurchased[0].quantity){
+				if(res[0].stock_quantity < productPurchased[0].quantity){
 					console.log("some geek beat you to it! no joy.");
 					connection.end();
 
 				//if there is enough stock 
-				} else if(res[0].StockQuantity >= productPurchased[0].quantity){
+				} else if(res[0].stock_quantity >= productPurchased[0].quantity){
 
 					console.log('');
 
@@ -81,16 +81,16 @@ var purchase = function(){
 					console.log(res[0].product_name + ' ' + res[0].price);
 
 					//var for purchase total 
-					var saleTotal = res[0].Price * productPurchased[0].quantity;
+					var saleTotal = res[0].price * productPurchased[0].quantity;
 						console.log('Total: ' + saleTotal);
 
 					//this variable contains the newly updated stock quantity of the item purchased
-					newQuantity = res[0].stock_quantity - productPurchased[0].Quantity;
+					newQuantity = res[0].stock_quantity - productPurchased[0].quantity;
 			
 					// connects to the mysql database products and updates the stock quantity for the item puchased
 					connection.query("UPDATE Products SET stock_quantity = " + newQuantity +" WHERE item_id = " + productPurchased[0].item_id, function(err, res){
-						// if(err) throw err;
-						// console.log('Problem ', err);
+						if(err) throw err;
+						console.log('Problem ', err);
 						console.log('');
 						console.log("Processing.  Thank you for shopping Bamazon-Geek!");
 						console.log('');
