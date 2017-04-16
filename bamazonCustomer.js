@@ -1,5 +1,4 @@
 var mysql = require('mysql');
-var prompt = require('prompt');
 var Table = require('cli-table');
 var inquirer = require('inquirer');
 
